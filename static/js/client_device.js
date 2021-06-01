@@ -94,14 +94,14 @@ let init = (app_device) => {
         }).catch(error => console.log(error));
     }
 
-
+    // LOAD LOGS
     app_device.load_logs = function(){
         
         axios.get(load_logs_url)
         .then(function (response) {
             
             app_device.vue.logs = app_device.decorate(app_device.enumerate(response.data.rows));
-            // console.log(app_device.vue.logs);
+            console.log(app_device.vue.logs);
         });
     }
 
@@ -109,16 +109,48 @@ let init = (app_device) => {
     // clear table after sync
     // TODO:check if can send only new logs to server
     app_device.sync_logs = function(){
-        
-        axios.get(load_logs_url)
-        .then(function (response) {
-            
-            app_device.vue.logs = app_device.decorate(app_device.enumerate(response.data.rows));
-            // console.log(app_device.vue.logs);
+        console.log("in js function: sync_logs");
+
+        //post current set of outputs to server
+        http://127.0.0.1:8000/SlugIOT_Server/api/device_logs
+
+        for(o in app_device.vue.logs){
+
+            axios.post(app_device.vue.slugIOT_server_url+"device_logs", {
+                "device_id": app_device.vue.device_id,
+                "procedure_id": app_device.vue.logs[o].procedure_id,
+                "log_level": app_device.vue.logs[o].log_level,
+                "log_message": app_device.vue.logs[o].log_message,
+                "time_stamp": app_device.vue.logs[o].time_stamp
+
+            }).then(function (response) {
+                console.log(response);
+                console.log("post sent successfully");
+            });
+        }
+
+        // TODO check status of above post requests
+
+        // clear logs table
+        axios.get(clear_logs_url).then(function (response) {
+
+            app_device.vue.logs = [];
+            console.log("cleared logs:: ")
+            console.log(app_device.vue.logs);
+            // app_device.vue.outputs_synced = true;
         });
+
+
+        // add entry to sync_events table
+            axios.post(sync_events_url, {
+                table_name: "client_logs"
+            }).then(function (response) {
+                // console.log(response);
+                console.log("inserted event into sync table");
+            });
     }
 
-
+    // LOAD OUTPUTS
     app_device.load_outputs = function(){
         console.log("in js function: load_outputs");
 
@@ -126,7 +158,7 @@ let init = (app_device) => {
         .then(function (response) {
             
             app_device.vue.outputs = app_device.decorate(app_device.enumerate(response.data.rows));
-            // console.log(app_device.vue.outputs);
+            console.log(app_device.vue.outputs);
         });
     }
 
@@ -185,7 +217,9 @@ let init = (app_device) => {
     app_device.methods = {
         reset_form: app_device.reset_form,
         get_device_details: app_device.get_device_details,
-        sync_outputs: app_device.sync_outputs
+        sync_outputs: app_device.sync_outputs,
+        sync_logs: app_device.sync_logs
+
     };
 
     // This creates the Vue instance.

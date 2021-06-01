@@ -48,8 +48,11 @@ def index():
     # print("in index():", get_user_email())                
     return dict(
         load_logs_url=URL('load_logs', signer=url_signer),
+        clear_logs_url=URL('clear_logs', signer=url_signer),
+
         load_outputs_url=URL('load_outputs', signer=url_signer),
         clear_outputs_url=URL('clear_outputs', signer=url_signer),
+
         sync_events_url=URL('sync_events', signer=url_signer)
     )
 
@@ -59,6 +62,18 @@ def index():
 def load_logs():
     rows = db(db.client_logs).select().as_list()
     return dict(rows=rows)
+
+
+@action('clear_logs')
+@action.uses(url_signer.verify(), db)
+def clear_logs():
+    my_query_logs = (db.client_logs.id != None)
+    my_set_logs = db(my_query_logs)
+    rows = my_set_logs.select()
+    print("printed from slugIOT client - will clear from logs table: ", rows)
+    my_set_logs.delete()
+    print("cleared table client_logs" )
+    return "ok"
 
 
 @action('load_outputs')
@@ -72,27 +87,13 @@ def load_outputs():
 @action('clear_outputs')
 @action.uses(url_signer.verify(), db)
 def clear_outputs():
-    # db.procedure_state._delete()
-    myquery = (db.procedure_state.id != None)
-    myset = db(myquery)
-    rows = myset.select()
+    my_query_outputs = (db.procedure_state.id != None) #TODO change to client_outputs
+    my_set_outputs = db(my_query_outputs)
+    rows = my_set_outputs.select()
     print("printed from slugIOT client - will clear from output table: ", rows)
-
-    # myset.update(myfield='somevalue')
-    myset.delete()
+    my_set_outputs.delete()
     print("cleared table procedure_state" )
     return "ok"
-
-
-#     id = request.params.get('id')
-#     assert id is not None
-#     db(db.procedures_map.id == id).delete()
-
-# print(db(db.person.name == 'Alex')._delete())
-# DELETE FROM "person" WHERE ("person"."name" = 'Alex');
-
-# db(db.procedures_map)._delete())
-# DELETE FROM "person" WHERE ("person"."name" = 'Alex');
 
 
 @action('sync_events', method="POST")

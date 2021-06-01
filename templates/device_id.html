@@ -197,7 +197,7 @@
                 <blockquote class="is-danger">
                     Logs transferred to the SlugIOT Server.
                     <br>
-                    Please refer to the SlugIOT Server to view archived outputs.
+                    Please refer to the SlugIOT Server to view archived logs.
                 </blockquote>
             </div>
     </div>
@@ -210,8 +210,11 @@
 [[block page_scripts]]
 <script>
     let load_logs_url = "[[=XML(load_logs_url)]]";
+    let clear_logs_url = "[[=XML(clear_logs_url)]]";
+
     let load_outputs_url = "[[=XML(load_outputs_url)]]";
     let clear_outputs_url = "[[=XML(clear_outputs_url)]]";
+    
     let sync_events_url = "[[=XML(sync_events_url)]]";
 
 </script>
