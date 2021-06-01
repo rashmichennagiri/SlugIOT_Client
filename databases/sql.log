@@ -1,0 +1,150 @@
+timestamp: 2021-05-19T13:45:48.472464
+ALTER TABLE "device" ADD "device_mac_address" CHAR(512);
+timestamp: 2021-05-19T13:45:48.474346
+ALTER TABLE "device" ADD "device_nickname" CHAR(512);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2021-05-26T03:36:47.331213
+CREATE TABLE "contact"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(512),
+    "last_name" CHAR(512)
+);
+success!
+success!
+timestamp: 2021-05-26T03:52:41.366539
+CREATE TABLE "procedures_map"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "device_id" CHAR(512),
+    "procedure_name" CHAR(512)
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2021-05-29T01:41:55.228257
+CREATE TABLE "device_settings"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "procedure_id" CHAR(512),
+    "setting_name" CHAR(512),
+    "setting_value" CHAR(512),
+    "last_updated" TIMESTAMP
+);
+success!
+timestamp: 2021-05-29T01:41:55.235451
+CREATE TABLE "device_procedures"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "procedure_id" INTEGER,
+    "procedure_name" CHAR(512),
+    "procedure_code" TEXT,
+    "last_update" TIMESTAMP
+);
+success!
+timestamp: 2021-05-29T01:41:55.237662
+CREATE TABLE "device_logs"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "procedure_id" CHAR(512),
+    "log_level" INTEGER,
+    "log_message" TEXT
+);
+success!
+timestamp: 2021-05-29T01:41:55.240148
+CREATE TABLE "device_outputs"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "procedure_id" CHAR(512),
+    "field_name" CHAR(512),
+    "output_value" TEXT,
+    "tag" CHAR(512)
+);
+success!
+timestamp: 2021-05-29T01:41:55.242231
+CREATE TABLE "procedure_state"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "procedure_id" CHAR(512),
+    "class_name" CHAR(512),
+    "procedure_state" TEXT,
+    "time_stamp" TIMESTAMP
+);
+success!
+timestamp: 2021-05-29T01:41:55.243973
+CREATE TABLE "synchronization_events"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "table_name" CHAR(512),
+    "time_stamp" TIMESTAMP
+);
+success!
+timestamp: 2021-05-29T16:33:31.313735
+CREATE TABLE "client_settings"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "procedure_id" CHAR(512),
+    "setting_name" CHAR(512),
+    "setting_value" CHAR(512),
+    "last_updated" TIMESTAMP
+);
+success!
+timestamp: 2021-05-29T16:33:31.319087
+CREATE TABLE "client_procedures"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "procedure_id" INTEGER,
+    "procedure_name" CHAR(512),
+    "procedure_code" TEXT,
+    "last_updated" TIMESTAMP
+);
+success!
+timestamp: 2021-05-29T16:33:31.321095
+CREATE TABLE "client_logs"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "procedure_id" CHAR(512),
+    "log_level" INTEGER,
+    "log_message" TEXT
+);
+success!
+timestamp: 2021-05-29T16:33:31.323040
+CREATE TABLE "client_outputs"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "procedure_id" CHAR(512),
+    "field_name" CHAR(512),
+    "output_value" TEXT,
+    "tag" CHAR(512)
+);
+success!
+success!
+timestamp: 2021-05-30T13:26:56.664810
+ALTER TABLE "client_outputs" ADD "description" CHAR(512);
+timestamp: 2021-05-30T13:26:56.667219
+ALTER TABLE "client_outputs" ADD "comments" CHAR(512);
+success!

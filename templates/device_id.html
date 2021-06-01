@@ -1,0 +1,219 @@
+[[extend 'layout.html']]
+
+<style>
+[v-cloak] {
+     display: none;
+}
+
+</style>
+
+<div class="section" id="vue-target-device1" v-cloak>
+
+  <div v-if="ask_for_device" class="container block">
+    <div class="title">Please Enter Your Device's Registration ID:</div>
+    <div class="form">
+      <div class="field">
+        <label class="label">Device ID:</label>
+        <input type="text" v-model="device_id" class="input">
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <input type="submit" @click="get_device_details" value="Get Device" class="button is-primary">
+          <input type="submit" @click="reset_form" value="Clear" class="button is-warning">
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+    <div v-if="has_error" class="content">
+        <blockquote class="is-danger">
+            Please enter a valid device id. 
+            <br>
+           If you do not have one, please register your new device at the SlugIOT Server.
+        </blockquote>
+    </div>
+
+
+  <div v-if="!ask_for_device" class="container block">
+
+    <div class="box">
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+              <p class="title">
+                {{rows[0].device_nickname}} (# {{device_id}})
+              </p>
+              <p class="subtitle">
+                <!-- {{rows}} -->
+                {{rows[0].description}} 
+              </p>
+            </div>
+        </section>  
+        
+        <table class="table is-striped is-fullwidth">
+            <tr>
+                <td> <b>MAC address:</b></td>
+                <td> {{rows[0].device_mac_address}}</td>
+            </tr>
+            
+            <tr>
+                <td> <b>Full Name:</b></td>
+                <td> {{rows[0].device_name}}</td>
+            </tr>
+
+        </table>
+    </div>
+
+
+    <div class="box">
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+              <p class="title">
+                Procedure
+              </p>
+              <p class="subtitle">
+                Currently installed procedure:
+              </p>
+            </div>
+
+        </section>
+            {{procedure_code}}
+
+            <!-- table of logs -->
+            <!-- <table class="table is-striped is-fullwidth">
+                <tr>
+                <th>Timestamp</th>
+                <th>Log Level</th>
+                <th>Message</th>
+                <th>Procedure ID</th>
+                </tr>
+                <tr v-for="r in logs">
+                    <td> {{r.time_stamp}}</td>
+                    <td> {{r.log_level}}</td>
+                    <td> {{r.log_message}}</td>
+                    <td> {{r.procedure_id}}</td>
+                </tr>
+            </table> -->
+
+            <!-- <input type="submit" @click="sync_logs" value="Sync Logs" class="button is-primary"> -->
+        
+            <!-- <input type="submit" @click="fetch_latest_procedure" value="Fetch Latest Procedure" class="button is-primary"> -->
+
+        
+    </div>
+
+
+    <div class="box">
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+              <p class="title">
+                Outputs
+              </p>
+              <p class="subtitle">
+                table of all device outputs so far
+              </p>
+            </div>
+        </section>
+            <!-- table of outputs -->
+            <table class="table is-striped is-fullwidth">
+                <tr>
+                <th>Timestamp</th>
+                <th>Field Name</th>
+                <th>Description</th>
+                <th>Output Value</th>
+                <th>Comments</th>
+                <th>Procedure ID</th>
+                <th>Tag</th>
+                </tr>
+                <tr v-for="o in outputs">
+                    <td> {{o.time_stamp}}</td>
+                    <td> {{o.field_name}}</td>
+                    <td> {{o.description}}</td>
+                    <td> {{o.output_value}}</td>
+                    <td> {{o.comments}}</td>
+                    <td> {{o.procedure_id}}</td>
+                    <td> {{o.tag}}</td>
+                </tr>
+            </table>
+            <section>
+                <p>
+                    Click to send the current set of outputs to the SlugIOT Server: 
+                </p>
+                <input type="submit" @click="sync_outputs" 
+                        value="Sync Outputs" class="button is-primary"
+                        title="Send outputs to SlugIOT Server">
+            </section>
+            <br>
+            <div v-if="outputs.length==0" class="content">
+                <blockquote class="is-danger">
+                    Outputs transferred to the SlugIOT Server.
+                    <br>
+                    Please refer to the SlugIOT Server to view archived outputs.
+                </blockquote>
+            </div>
+
+
+    </div>
+
+    <div class="box">
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+              <p class="title">
+                Logs
+              </p>
+              <p class="subtitle">
+                log of all errors and warnings
+              </p>
+            </div>
+        </section>
+            <!-- table of logs -->
+            <table class="table is-striped is-fullwidth">
+                <tr>
+                <th>Timestamp</th>
+                <th>Log Level</th>
+                <th>Message</th>
+                <th>Procedure ID</th>
+                </tr>
+                <tr v-for="r in logs">
+                    <td> {{r.time_stamp}}</td>
+                    <td> {{r.log_level}}</td>
+                    <td> {{r.log_message}}</td>
+                    <td> {{r.procedure_id}}</td>
+                </tr>
+            </table>
+
+            <section>
+                <p>
+                    Click to send the current set of logs to the SlugIOT Server: 
+                </p>
+                <input type="submit" @click="sync_logs" 
+                        value="Sync Logs" class="button is-primary"
+                        title="Send logs to SlugIOT Server">
+            </section>
+            <br>
+            <div v-if="logs.length==0" class="content">
+                <blockquote class="is-danger">
+                    Logs transferred to the SlugIOT Server.
+                    <br>
+                    Please refer to the SlugIOT Server to view archived outputs.
+                </blockquote>
+            </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+[[block page_scripts]]
+<script>
+    let load_logs_url = "[[=XML(load_logs_url)]]";
+    let load_outputs_url = "[[=XML(load_outputs_url)]]";
+    let clear_outputs_url = "[[=XML(clear_outputs_url)]]";
+    let sync_events_url = "[[=XML(sync_events_url)]]";
+
+</script>
+<script src="js/client_device.js"></script>
+[[end]]
